@@ -10,6 +10,11 @@ export function activate(context: vscode.ExtensionContext) {
 		'json-helper.alphabetize-json',
 		(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
 
+			if (vscode.window.activeTextEditor?.document.languageId !== 'json') {
+				vscode.window.showErrorMessage('File must be of type *.json');
+				return;
+			}
+
 			const textDocumentJson = JSON.parse(textEditor.document.getText());
 			const alphabetizedEntries = Object.entries(textDocumentJson).sort((firstKey, secondKey) => firstKey[0].toLowerCase() < secondKey[0].toLowerCase() ? -1 : 1);
 			const alphabetizedJson = Object.fromEntries(alphabetizedEntries);
